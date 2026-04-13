@@ -128,6 +128,21 @@ extern "C" {
 
 
 
+/* Defines for LCD_SPI */
+#define LCD_SPI_INST                                                       SPI1
+#define LCD_SPI_INST_IRQHandler                                 SPI1_IRQHandler
+#define LCD_SPI_INST_INT_IRQN                                     SPI1_INT_IRQn
+#define GPIO_LCD_SPI_PICO_PORT                                            GPIOB
+#define GPIO_LCD_SPI_PICO_PIN                                     DL_GPIO_PIN_8
+#define GPIO_LCD_SPI_IOMUX_PICO                                 (IOMUX_PINCM25)
+#define GPIO_LCD_SPI_IOMUX_PICO_FUNC                 IOMUX_PINCM25_PF_SPI1_PICO
+/* GPIO configuration for LCD_SPI */
+#define GPIO_LCD_SPI_SCLK_PORT                                            GPIOB
+#define GPIO_LCD_SPI_SCLK_PIN                                     DL_GPIO_PIN_9
+#define GPIO_LCD_SPI_IOMUX_SCLK                                 (IOMUX_PINCM26)
+#define GPIO_LCD_SPI_IOMUX_SCLK_FUNC                 IOMUX_PINCM26_PF_SPI1_SCLK
+
+
 
 /* Port definition for Pin Group KEY */
 #define KEY_PORT                                                         (GPIOB)
@@ -145,27 +160,30 @@ extern "C" {
 /* Defines for B22: GPIOB.22 with pinCMx 50 on package pin 21 */
 #define LED_B22_PIN                                             (DL_GPIO_PIN_22)
 #define LED_B22_IOMUX                                            (IOMUX_PINCM50)
-/* Port definition for Pin Group SPI_LCD */
-#define SPI_LCD_PORT                                                     (GPIOB)
+/* Port definition for Pin Group LCD_GPIO */
+#define LCD_GPIO_PORT                                                    (GPIOB)
 
-/* Defines for LCD_SDA: GPIOB.8 with pinCMx 25 on package pin 60 */
-#define SPI_LCD_LCD_SDA_PIN                                      (DL_GPIO_PIN_8)
-#define SPI_LCD_LCD_SDA_IOMUX                                    (IOMUX_PINCM25)
-/* Defines for LCD_SCL: GPIOB.9 with pinCMx 26 on package pin 61 */
-#define SPI_LCD_LCD_SCL_PIN                                      (DL_GPIO_PIN_9)
-#define SPI_LCD_LCD_SCL_IOMUX                                    (IOMUX_PINCM26)
 /* Defines for LCD_RES: GPIOB.10 with pinCMx 27 on package pin 62 */
-#define SPI_LCD_LCD_RES_PIN                                     (DL_GPIO_PIN_10)
-#define SPI_LCD_LCD_RES_IOMUX                                    (IOMUX_PINCM27)
+#define LCD_GPIO_LCD_RES_PIN                                    (DL_GPIO_PIN_10)
+#define LCD_GPIO_LCD_RES_IOMUX                                   (IOMUX_PINCM27)
 /* Defines for LCD_DC: GPIOB.11 with pinCMx 28 on package pin 63 */
-#define SPI_LCD_LCD_DC_PIN                                      (DL_GPIO_PIN_11)
-#define SPI_LCD_LCD_DC_IOMUX                                     (IOMUX_PINCM28)
+#define LCD_GPIO_LCD_DC_PIN                                     (DL_GPIO_PIN_11)
+#define LCD_GPIO_LCD_DC_IOMUX                                    (IOMUX_PINCM28)
 /* Defines for LCD_CS: GPIOB.14 with pinCMx 31 on package pin 2 */
-#define SPI_LCD_LCD_CS_PIN                                      (DL_GPIO_PIN_14)
-#define SPI_LCD_LCD_CS_IOMUX                                     (IOMUX_PINCM31)
+#define LCD_GPIO_LCD_CS_PIN                                     (DL_GPIO_PIN_14)
+#define LCD_GPIO_LCD_CS_IOMUX                                    (IOMUX_PINCM31)
 /* Defines for LCD_BLK: GPIOB.26 with pinCMx 57 on package pin 28 */
-#define SPI_LCD_LCD_BLK_PIN                                     (DL_GPIO_PIN_26)
-#define SPI_LCD_LCD_BLK_IOMUX                                    (IOMUX_PINCM57)
+#define LCD_GPIO_LCD_BLK_PIN                                    (DL_GPIO_PIN_26)
+#define LCD_GPIO_LCD_BLK_IOMUX                                   (IOMUX_PINCM57)
+/* Port definition for Pin Group IIC_MPU6050 */
+#define IIC_MPU6050_PORT                                                 (GPIOA)
+
+/* Defines for MPU6050_SDA: GPIOA.1 with pinCMx 2 on package pin 34 */
+#define IIC_MPU6050_MPU6050_SDA_PIN                              (DL_GPIO_PIN_1)
+#define IIC_MPU6050_MPU6050_SDA_IOMUX                             (IOMUX_PINCM2)
+/* Defines for MPU6050_SCL: GPIOA.0 with pinCMx 1 on package pin 33 */
+#define IIC_MPU6050_MPU6050_SCL_PIN                              (DL_GPIO_PIN_0)
+#define IIC_MPU6050_MPU6050_SCL_IOMUX                             (IOMUX_PINCM1)
 
 
 
@@ -178,6 +196,7 @@ void SYSCFG_DL_SYSCTL_init(void);
 void SYSCFG_DL_PWM_LED_init(void);
 void SYSCFG_DL_TIMER_0_init(void);
 void SYSCFG_DL_UART_DEBUG_init(void);
+void SYSCFG_DL_LCD_SPI_init(void);
 
 void SYSCFG_DL_SYSTICK_init(void);
 

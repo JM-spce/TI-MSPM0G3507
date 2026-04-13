@@ -151,7 +151,7 @@ uint64_t systick_get_time_us(void)
 }
 
 // 延时函数（最多延时200ms，避免溢出）
-void systick_delay_ms(float delay_ms)
+void Delay_ms(float delay_ms)
 {
     uint32_t tickstart = SysTick->VAL;
     uint32_t delay_ticks = (uint32_t)(delay_ms * (float)cpu_freq_hz_ms);
@@ -186,7 +186,7 @@ void systick_delay_ms(float delay_ms)
     }
 }
 
-void systick_delay_s(float delay_s)
+void Delay_s(float delay_s)
 {
     // 将秒转换为毫秒，分段调用 systick_delay_ms
     float remaining_ms = delay_s * 1000.0f;
@@ -194,13 +194,13 @@ void systick_delay_s(float delay_s)
     // 每次延时100ms，保证精度和稳定性
     while (remaining_ms >= 100.0f)
     {
-        systick_delay_ms(100.0f);
+        Delay_ms(100.0f);
         remaining_ms -= 100.0f;
     }
 
     // 处理剩余的毫秒数
     if (remaining_ms > 0.0f)
     {
-        systick_delay_ms(remaining_ms);
+        Delay_ms(remaining_ms);
     }
 }

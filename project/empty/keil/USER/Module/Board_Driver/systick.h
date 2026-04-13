@@ -61,8 +61,8 @@ uint64_t systick_get_time_us(void);
  * @brief 延时指定毫秒数（最多200ms）
  * @param delay_ms 延时时间（毫秒）
  */
-void systick_delay_ms(float delay_ms);
+void Delay_ms(float delay_ms);
 
-void systick_delay_s(float delay_s);
+void Delay_s(float delay_s);
 
 #endif

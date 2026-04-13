@@ -438,16 +438,6 @@
               <FilePath>.\USER\Module\Board_Driver\systick.h</FilePath>
             </File>
             <File>
-              <FileName>tim_delay.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\USER\Module\Board_Driver\tim_delay.c</FilePath>
-            </File>
-            <File>
-              <FileName>tim_delay.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\USER\Module\Board_Driver\tim_delay.h</FilePath>
-            </File>
-            <File>
               <FileName>UART0_Debug.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\USER\Module\Board_Driver\UART0_Debug.c</FilePath>

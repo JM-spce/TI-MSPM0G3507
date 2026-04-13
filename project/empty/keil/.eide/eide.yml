@@ -22,7 +22,9 @@ virtualFolder:
       files: []
       folders:
         - name: Algorithm
-          files: []
+          files:
+            - path: USER/Module/Board_Device/MahonyAHRS.c
+            - path: USER/Module/Board_Device/MahonyAHRS.h
           folders: []
         - name: Module
           files:
@@ -35,12 +37,16 @@ virtualFolder:
             - path: USER/Module/Board_Device/LCD.c
             - path: USER/Module/Board_Device/LCD.h
             - path: USER/Module/Board_Device/LCD_Font.h
-            - path: USER/Module/Board_Device/LCD_Init.c
-            - path: USER/Module/Board_Device/LCD_Init.h
             - path: USER/Module/Board_Device/board_key.c
             - path: USER/Module/Board_Device/board_key.h
             - path: USER/Module/Board_Driver/TIM0.c
             - path: USER/Module/Board_Driver/TIM0.h
+            - path: USER/Module/Board_Driver/MyIIC.c
+            - path: USER/Module/Board_Driver/MyIIC.h
+            - path: USER/Module/Board_Device/mpu6050.c
+            - path: USER/Module/Board_Device/mpu6050.h
+            - path: USER/Module/Board_Device/mpu6050_Reg.h
+            - path: USER/Module/Board_Device/LCD_Font.c
           folders: []
         - name: Task
           files: []

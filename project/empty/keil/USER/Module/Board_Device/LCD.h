@@ -1,55 +1,62 @@
-#ifndef __LCD_H
-#define __LCD_H
+#ifndef __LCD_H_
+#define __LCD_H_
 
-#include <stdint.h>
-
-typedef uint8_t u8;
-typedef uint16_t u16;
-typedef uint32_t u32;
-
-void LCD_Fill(u16 xsta, u16 ysta, u16 xend, u16 yend, u16 color);  // 指定区域填充颜色
-void LCD_DrawPoint(u16 x, u16 y, u16 color);                       // 在指定位置画一个点
-void LCD_DrawLine(u16 x1, u16 y1, u16 x2, u16 y2, u16 color);      // 在指定位置画一条线
-void LCD_DrawRectangle(u16 x1, u16 y1, u16 x2, u16 y2, u16 color); // 在指定位置画一个矩形
-void Draw_Circle(u16 x0, u16 y0, u8 r, u16 color);                 // 在指定位置画一个圆
-
-void LCD_ShowChinese(u16 x, u16 y, u8 *s, u16 fc, u16 bc, u8 sizey, u8 mode);      // 显示汉字串
-void LCD_ShowChinese12x12(u16 x, u16 y, u8 *s, u16 fc, u16 bc, u8 sizey, u8 mode); // 显示单个12x12汉字
-void LCD_ShowChinese16x16(u16 x, u16 y, u8 *s, u16 fc, u16 bc, u8 sizey, u8 mode); // 显示单个16x16汉字
-void LCD_ShowChinese24x24(u16 x, u16 y, u8 *s, u16 fc, u16 bc, u8 sizey, u8 mode); // 显示单个24x24汉字
-void LCD_ShowChinese32x32(u16 x, u16 y, u8 *s, u16 fc, u16 bc, u8 sizey, u8 mode); // 显示单个32x32汉字
-
-void LCD_ShowChar(u16 x, u16 y, u8 num, u16 fc, u16 bc, u8 sizey, u8 mode);        // 显示一个字符
-void LCD_ShowString(u16 x, u16 y, const u8 *p, u16 fc, u16 bc, u8 sizey, u8 mode); // 显示字符串
-u32 mypow(u8 m, u8 n);                                                             // 求幂
-void LCD_ShowIntNum(u16 x, u16 y, u16 num, u8 len, u16 fc, u16 bc, u8 sizey);      // 显示整数变量
-void LCD_ShowFloatNum1(u16 x, u16 y, float num, u8 len, u16 fc, u16 bc, u8 sizey); // 显示两位小数变量
-
-void LCD_ShowPicture(u16 x, u16 y, u16 length, u16 width, const u8 pic[]); // 显示图片
-
-void LCD_Printf(u16 x, u16 y, u16 fc, u8 sizey, const char *fmt, ...);
-
-// 画笔颜色
-#define WHITE 0xFFFF
-#define BLACK 0x0000
-#define BLUE 0x001F
-#define BRED 0XF81F
-#define GRED 0XFFE0
-#define GBLUE 0X07FF
-#define RED 0xF800
-#define MAGENTA 0xF81F
-#define GREEN 0x07E0
-#define CYAN 0x7FFF
-#define YELLOW 0xFFE0
-#define BROWN 0XBC40      // 棕色
-#define BRRED 0XFC07      // 棕红色
-#define GRAY 0X8430       // 灰色
-#define DARKBLUE 0X01CF   // 深蓝色
-#define LIGHTBLUE 0X7D7C  // 浅蓝色
-#define GRAYBLUE 0X5458   // 灰蓝色
-#define LIGHTGREEN 0X841F // 浅绿色
-#define LGRAY 0XC618      // 浅灰色(PANNEL),窗体背景色
-#define LGRAYBLUE 0XA651  // 浅灰蓝色(中间层颜色)
-#define LBBLUE 0X2B12     // 浅棕蓝色(选择条目的反色)
-
+#include "ti_msp_dl_config.h"
+#include "LCD_Font.h"
+#include <stdarg.h>
+#include "stdlib.h"
+#include <string.h>
+#include <stdio.h>
+#include "systick.h"
+ 
+//---------------------------------------------------------------------------------------------------------------
+#define SPI_INST											(LCD_SPI_INST)												//SPI通道
+#define GPIO_PORT											(GPIO_LCD_SPI_PICO_PORT)													//GPIO_PORT
+#define	GPIO_RES_PIN										(LCD_GPIO_LCD_RES_PIN)												//RES
+#define	GPIO_DC_PIN											(LCD_GPIO_LCD_DC_PIN)													//DC
+#define	GPIO_CS_PIN											(LCD_GPIO_LCD_CS_PIN)													//CS
+//---------------------------------------------------------------------------------------------------------------
+ 
+#define LCD_DEFAULT_DISPLAY_DIR      (LCD_PORTAIT)                      // 默认的显示方向
+#define LCD_DEFAULT_PENCOLOR         (RGB565_WHITE)                            // 默认的画笔颜色
+#define LCD_DEFAULT_BGCOLOR          (RGB565_BLACK)                          // 默认的背景颜色
+#define LCD_DEFAULT_DISPLAY_FONT     (LCD_6X8_FONT)                      	// 默认的字体模式
+#define LCD_W 128																// 屏幕尺寸W
+#define LCD_H 160																// 屏幕尺寸H
+ 
+#define LCD_RES(x)					( (x) ? DL_GPIO_setPins(GPIO_PORT, GPIO_RES_PIN) : DL_GPIO_clearPins(GPIO_PORT, GPIO_RES_PIN) )
+#define LCD_DC(x)					( (x) ? DL_GPIO_setPins(GPIO_PORT, GPIO_DC_PIN) : DL_GPIO_clearPins(GPIO_PORT, GPIO_DC_PIN) )
+#define LCD_CS(x)					( (x) ? DL_GPIO_setPins(GPIO_PORT, GPIO_CS_PIN) : DL_GPIO_clearPins(GPIO_PORT, GPIO_CS_PIN) )
+ 
+//---------------------------------------------------------------------------------------------------------------
+typedef enum
+{
+    LCD_PORTAIT                      = 0,                                    // 竖屏模式
+    LCD_PORTAIT_180                  = 1,                                    // 竖屏模式  旋转180
+    LCD_CROSSWISE                    = 2,                                    // 横屏模式
+    LCD_CROSSWISE_180                = 3,                                    // 横屏模式  旋转180
+}LCD_dir_enum;
+ 
+typedef enum
+{
+    LCD_6X8_FONT                     = 0,                                    // 6x8      字体
+    LCD_8X16_FONT                    = 1,                                    // 8x16     字体
+    LCD_16X16_FONT                   = 2,                                    // 16x16    字体 目前不支持
+}LCD_font_size_enum;
+//---------------------------------------------------------------------------------------------------------------
+ 
+void LCD_init (void);
+ 
+void LCD_clear (void);
+void LCD_full (const uint16_t color);
+void LCD_set_color (uint16_t pen, const uint16_t bgcolor);
+void LCD_draw_point (uint16_t x, uint16_t y, const uint16_t color);
+void LCD_draw_line (uint16_t x_start, uint16_t y_start, uint16_t x_end, uint16_t y_end, const uint16_t color);
+void LCD_show_char (uint16_t x, uint16_t y, const char dat);
+void LCD_show_string (uint16_t x, uint16_t y, const char dat[]);
+void LCD_show_int (uint16_t x, uint16_t y, const int32_t dat, uint8_t num);
+void LCD_show_uint (uint16_t x, uint16_t y, const uint32_t dat, uint8_t num);
+void LCD_show_float (uint16_t x, uint16_t y, const double dat, uint8_t num, uint8_t pointnum);
+void LCDprint(uint16_t x, uint16_t y, const char *format, ...);
+ 
 #endif
